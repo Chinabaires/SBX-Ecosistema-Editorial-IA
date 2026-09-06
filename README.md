@@ -151,9 +151,11 @@ Airtable Interfaces permite monitorear:
 
 ## 🎥 Video Demo
 
-**Pendiente de incorporar.**
+[▶️ Ver Video Demo Final – SBX Ecosistema Editorial IA](SBX_Ecosistema_Editorial_AI_Final_3min.mp4)
 
-La demostración final mostrará el recorrido completo:
+**Duración:** 2:58 min
+
+La demostración muestra el recorrido completo:
 
 **Idea Semilla → n8n → Base de Conocimiento → IA → Borrador → HITL → decisión humana → registro → Dashboard**
 
