@@ -1,0 +1,1669 @@
+{
+  "name": "FINAL – SBX Ecosistema Editorial IA",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyX",
+              "value": 5,
+              "unit": "minutes"
+            }
+          ]
+        },
+        "authentication": "airtableTokenApi",
+        "baseId": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblvneKG8egdMFUS4/viwtFtObDRPeGl2hc?blocks=hide",
+          "mode": "url"
+        },
+        "tableId": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn/viw2ueX636AuaaCUg?blocks=hide",
+          "mode": "url"
+        },
+        "triggerField": "Última Modificación",
+        "additionalFields": {
+          "formula": "{Estado}='Generando'"
+        }
+      },
+      "type": "n8n-nodes-base.airtableTrigger",
+      "typeVersion": 1,
+      "position": [
+        -8864,
+        -5136
+      ],
+      "id": "e37257e3-3243-4ffa-a5f9-af00e2aa1df0",
+      "name": "Airtable Trigger",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -8096,
+        -5024
+      ],
+      "id": "05265301-a012-476e-8f1e-bb600e58ced7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn/viw2ueX636AuaaCUg?blocks=hide",
+          "mode": "url"
+        },
+        "table": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn/viw2ueX636AuaaCUg?blocks=hide",
+          "mode": "url"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Aprobado": false,
+            "Estado": "Generado",
+            "Borrador IA": "={{ $json.output }}",
+            "id": "={{ $('Airtable Trigger').item.json.id }}",
+            "Fecha de Generación": "={{ $now }}",
+            "Resultado Ejecución": "Exitoso"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Idea Semilla",
+              "displayName": "Idea Semilla",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Generando",
+                  "value": "Generando"
+                },
+                {
+                  "name": "Generado",
+                  "value": "Generado"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Borrador IA",
+              "displayName": "Borrador IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Aprobado",
+              "displayName": "Aprobado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado Final",
+              "displayName": "Estado Final",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente de revisión",
+                  "value": "Pendiente de revisión"
+                },
+                {
+                  "name": "Publicable",
+                  "value": "Publicable"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Base de Conocimiento",
+              "displayName": "Base de Conocimiento",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Última Modificación",
+              "displayName": "Última Modificación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Log de Ejecuciones",
+              "displayName": "Log de Ejecuciones",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Conocimiento Utilizado",
+              "displayName": "Conocimiento Utilizado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Fecha de Generación",
+              "displayName": "Fecha de Generación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Aprobación",
+              "displayName": "Fecha de Aprobación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha Publicable",
+              "displayName": "Fecha Publicable",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resultado Ejecución",
+              "displayName": "Resultado Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -7632,
+        -5232
+      ],
+      "id": "28c1e51a-3e5c-4839-a88e-c2019826c219",
+      "name": "Guardar Borrador + Estado Generado",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appeBl5c14fu1yVMw",
+          "mode": "list",
+          "cachedResultName": "SBX – Ecosistema Editorial IA | FINAL",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9Kou95byCgGwIK",
+          "mode": "list",
+          "cachedResultName": "Log de Ejecuciones",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw/tbl9Kou95byCgGwIK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resuelto": false,
+            "ID Ejecución": "={{ $execution.id }}",
+            "Fecha y Hora": "={{ $now }}",
+            "Contenido": "={{ [ $('Airtable Trigger').item.json.id ] }}",
+            "Resultado": "Exitoso",
+            "Etapa": "Generación IA",
+            "Nodo": "Guardar Borrador + Estado Generado",
+            "Duración (segundos)": 0
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Ejecución",
+              "displayName": "ID Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha y Hora",
+              "displayName": "Fecha y Hora",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contenido",
+              "displayName": "Contenido",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resultado",
+              "displayName": "Resultado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Etapa",
+              "displayName": "Etapa",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Generación IA",
+                  "value": "Generación IA"
+                },
+                {
+                  "name": "HITL",
+                  "value": "HITL"
+                },
+                {
+                  "name": "Salida Slack",
+                  "value": "Salida Slack"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nodo",
+              "displayName": "Nodo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tipo de Error",
+              "displayName": "Tipo de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mensaje de Error",
+              "displayName": "Mensaje de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resuelto",
+              "displayName": "Resuelto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Duración (segundos)",
+              "displayName": "Duración (segundos)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -6528,
+        -5248
+      ],
+      "id": "85e80104-36ec-486c-a0f2-8353f11c8b99",
+      "name": "Registrar Ejecución Exitosa",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appeBl5c14fu1yVMw",
+          "mode": "list",
+          "cachedResultName": "SBX – Ecosistema Editorial IA | FINAL",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9Kou95byCgGwIK",
+          "mode": "list",
+          "cachedResultName": "Log de Ejecuciones",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw/tbl9Kou95byCgGwIK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resuelto": false,
+            "ID Ejecución": "={{ $execution.id }}",
+            "Fecha y Hora": "={{ $now }}",
+            "Contenido": "={{ $('Airtable Trigger').item.json.id }}",
+            "Resultado": "Error",
+            "Etapa": "Generación IA",
+            "Nodo": "AI Agent",
+            "Duración (segundos)": 0
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Ejecución",
+              "displayName": "ID Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha y Hora",
+              "displayName": "Fecha y Hora",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contenido",
+              "displayName": "Contenido",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resultado",
+              "displayName": "Resultado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Etapa",
+              "displayName": "Etapa",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Generación IA",
+                  "value": "Generación IA"
+                },
+                {
+                  "name": "HITL",
+                  "value": "HITL"
+                },
+                {
+                  "name": "Salida Slack",
+                  "value": "Salida Slack"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nodo",
+              "displayName": "Nodo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tipo de Error",
+              "displayName": "Tipo de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mensaje de Error",
+              "displayName": "Mensaje de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resuelto",
+              "displayName": "Resuelto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Duración (segundos)",
+              "displayName": "Duración (segundos)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -7616,
+        -5008
+      ],
+      "id": "db056e4d-6d04-4e72-aeea-74400f041e70",
+      "name": "Registrar Error IA",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "sendTo": "lialarzabal@gmail.com",
+        "subject": "SBX | Borrador IA pendiente de aprobación",
+        "message": "=Se generó un nuevo borrador editorial mediante IA y requiere validación humana antes de continuar.\n\nIDEA SEMILLA:\n{{ $('Airtable Trigger').item.json.fields['Idea Semilla'] }}\n\nBORRADOR IA:\n{{ $('Guardar Borrador + Estado Generado').item.json.fields['Borrador IA'] }}\n\nPor favor, revisá el contenido y seleccioná Aprobar o Rechazar.\n\nSBX – Ecosistema Editorial IA",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double",
+            "approveLabel": "Aprobar",
+            "disapproveLabel": "Rechazar"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -7408,
+        -5232
+      ],
+      "id": "9aca41ee-ac48-42c4-9c09-b2139647f532",
+      "name": "Send message and wait for response",
+      "webhookId": "1777a898-f3b9-421c-889b-c48bba48655f",
+      "credentials": {
+        "gmailOAuth2": {
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "01f732d4-22d4-4294-988e-e1cfc499f5a5",
+              "leftValue": "={{ $json.fields.Estado }}",
+              "rightValue": "Generando",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -8640,
+        -5136
+      ],
+      "id": "50da23cf-dc7c-4bfe-988b-0bd5630e56d9",
+      "name": "¿Estado = Generando?"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn/viw2ueX636AuaaCUg?blocks=hide",
+          "mode": "url"
+        },
+        "table": {
+          "__rl": true,
+          "value": "https://airtable.com/appeBl5c14fu1yVMw/tblvneKG8egdMFUS4/viwtFtObDRPeGl2hc?blocks=hide",
+          "mode": "url"
+        },
+        "filterByFormula": "{Estado}='Publicado'",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -8416,
+        -5232
+      ],
+      "id": "77af8087-14d1-4e76-94b0-ffc650522e6f",
+      "name": "Buscar Base de Conocimiento",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst contexto = items.map(item => {\n  const f = item.json.fields || {};\n\n  return `\nTEMA: ${f.Tema || ''}\nPREGUNTA: ${f.Pregunta || ''}\nRESPUESTA: ${f.Respuesta || ''}\nCONTEXTO: ${f.Contexto || ''}\nKEYWORDS: ${f.Keywords || ''}\n`.trim();\n}).join('\\n\\n---\\n\\n');\n\nreturn [\n  {\n    json: {\n      contextoRAG: `BASE DE CONOCIMIENTO OFICIAL\\n\\n${contexto}`\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -8192,
+        -5232
+      ],
+      "id": "69cf57fb-d691-467d-89d3-a8a1a0d6b2cc",
+      "name": "Preparar Contexto IA"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Airtable Trigger').item.json.fields['Idea Semilla'] }}",
+        "options": {
+          "systemMessage": "=Utiliza EXCLUSIVAMENTE la siguiente Base de Conocimiento Oficial como fuente de información sobre la empresa:\n{{ $json.contextoRAG }}\n\n\nREGLAS OBLIGATORIAS:\n\n1. Basa el contenido exclusivamente en la Base de Conocimiento Oficial proporcionada.\n2. No utilices conocimiento externo para completar información sobre la empresa.\n3. No inventes servicios, datos, clientes, resultados, metodologías ni afirmaciones que no estén presentes en la Base de Conocimiento.\n4. Respeta el tono y las directrices editoriales incluidas en el contexto.\n5. Si la Base de Conocimiento contiene conceptos suficientes para desarrollar una reflexión sobre la Idea Semilla, utilízalos sin exigir casos, métricas o información adicional. Si realmente no existe información relacionada con el tema, indícalo claramente y no inventes contenido.\n6. Puedes elaborar reflexiones y conclusiones derivadas directamente de los conceptos presentes en la Base de Conocimiento, siempre que no agregues hechos, datos o afirmaciones externas.\n7. Desarrolla una única idea principal.\n8. Finaliza con una conclusión o pregunta que invite a la reflexión.\n9. No consideres el contenido aprobado para publicación. El resultado es únicamente un BORRADOR y deberá pasar obligatoriamente por validación humana (HITL).\n\nDevuelve únicamente el texto final del borrador. {{ $json.contextoRAG }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -7968,
+        -5232
+      ],
+      "id": "94bcfdba-2f0d-4878-8719-e862ae6fa622",
+      "name": "Generar Borrador con IA",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "42c5ce1f-d582-4831-812b-4a5e23380336",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "={{ true }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -7184,
+        -5232
+      ],
+      "id": "f7ae2899-2745-433d-b421-068af5af7037",
+      "name": "¿Aprobado por Humano?"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appeBl5c14fu1yVMw",
+          "mode": "list",
+          "cachedResultName": "SBX – Ecosistema Editorial IA | FINAL",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblqRXicuhA0a8DYn",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Aprobado": true,
+            "id": "={{ $('Airtable Trigger').item.json.id }}",
+            "Estado Final": "Publicable",
+            "Fecha de Aprobación": "={{ $now }}",
+            "Fecha Publicable": "={{ $now }}",
+            "Resultado Ejecución": "Exitoso"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Idea Semilla",
+              "displayName": "Idea Semilla",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Generando",
+                  "value": "Generando"
+                },
+                {
+                  "name": "Generado",
+                  "value": "Generado"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Borrador IA",
+              "displayName": "Borrador IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Aprobado",
+              "displayName": "Aprobado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado Final",
+              "displayName": "Estado Final",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente de revisión",
+                  "value": "Pendiente de revisión"
+                },
+                {
+                  "name": "Publicable",
+                  "value": "Publicable"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Base de Conocimiento",
+              "displayName": "Base de Conocimiento",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Última Modificación",
+              "displayName": "Última Modificación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Log de Ejecuciones",
+              "displayName": "Log de Ejecuciones",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Conocimiento Utilizado",
+              "displayName": "Conocimiento Utilizado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Generación",
+              "displayName": "Fecha de Generación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Aprobación",
+              "displayName": "Fecha de Aprobación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha Publicable",
+              "displayName": "Fecha Publicable",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resultado Ejecución",
+              "displayName": "Resultado Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -6944,
+        -5248
+      ],
+      "id": "51bc7488-fe23-4f8a-a48b-4966dfdd5527",
+      "name": "Marcar como Publicable",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lialarzabal@gmail.com",
+        "subject": "SBX | Contenido aprobado y listo para publicación",
+        "message": "=<h2>Contenido aprobado</h2>  <p>El contenido generado por el Ecosistema Editorial IA de SBX fue aprobado mediante validación humana y quedó listo para publicación.</p>  <p><strong>IDEA SEMILLA:</strong><br> {{ $('Airtable Trigger').item.json.fields['Idea Semilla'] }}</p>  <p><strong>CONTENIDO FINAL:</strong><br> {{ $('Guardar Borrador + Estado Generado').item.json.fields['Borrador IA'] }}</p>  <p><strong>ESTADO:</strong> Publicable</p>  <p>SBX – Ecosistema Editorial IA</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -6736,
+        -5248
+      ],
+      "id": "e23fc8c6-eb9f-4554-a949-3fd594965f71",
+      "name": "Notificar Publicación",
+      "webhookId": "eb78a9bb-4fcf-4a53-a26b-73e86d30eddc",
+      "credentials": {
+        "gmailOAuth2": {
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appeBl5c14fu1yVMw",
+          "mode": "list",
+          "cachedResultName": "SBX – Ecosistema Editorial IA | FINAL",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblqRXicuhA0a8DYn",
+          "mode": "list",
+          "cachedResultName": "Centro de Comando",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw/tblqRXicuhA0a8DYn"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Aprobado": "={{ false }}",
+            "id": "={{ $('Airtable Trigger').item.json.id }}",
+            "Estado": "Generado"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Idea Semilla",
+              "displayName": "Idea Semilla",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente",
+                  "value": "Pendiente"
+                },
+                {
+                  "name": "Generando",
+                  "value": "Generando"
+                },
+                {
+                  "name": "Generado",
+                  "value": "Generado"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Borrador IA",
+              "displayName": "Borrador IA",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Aprobado",
+              "displayName": "Aprobado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Estado Final",
+              "displayName": "Estado Final",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Pendiente de revisión",
+                  "value": "Pendiente de revisión"
+                },
+                {
+                  "name": "Publicable",
+                  "value": "Publicable"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Base de Conocimiento",
+              "displayName": "Base de Conocimiento",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Última Modificación",
+              "displayName": "Última Modificación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Log de Ejecuciones",
+              "displayName": "Log de Ejecuciones",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Conocimiento Utilizado",
+              "displayName": "Conocimiento Utilizado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Generación",
+              "displayName": "Fecha de Generación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha de Aprobación",
+              "displayName": "Fecha de Aprobación",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Fecha Publicable",
+              "displayName": "Fecha Publicable",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Resultado Ejecución",
+              "displayName": "Resultado Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -6912,
+        -4992
+      ],
+      "id": "6b72e3be-5d0c-4432-9ec9-fcf89116c25b",
+      "name": "Registrar Rechazo",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appeBl5c14fu1yVMw",
+          "mode": "list",
+          "cachedResultName": "SBX – Ecosistema Editorial IA | FINAL",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl9Kou95byCgGwIK",
+          "mode": "list",
+          "cachedResultName": "Log de Ejecuciones",
+          "cachedResultUrl": "https://airtable.com/appeBl5c14fu1yVMw/tbl9Kou95byCgGwIK"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resuelto": false,
+            "ID Ejecución": "={{ $execution.id }}",
+            "Fecha y Hora": "={{ $now }}",
+            "Nodo": "If1 - Validación HITL Gmail",
+            "Resultado": "Exitoso",
+            "Etapa": "HITL",
+            "Contenido": "={{ [ $('Airtable Trigger').item.json.id ] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID Ejecución",
+              "displayName": "ID Ejecución",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Fecha y Hora",
+              "displayName": "Fecha y Hora",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Contenido",
+              "displayName": "Contenido",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resultado",
+              "displayName": "Resultado",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Exitoso",
+                  "value": "Exitoso"
+                },
+                {
+                  "name": "Error",
+                  "value": "Error"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Etapa",
+              "displayName": "Etapa",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Generación IA",
+                  "value": "Generación IA"
+                },
+                {
+                  "name": "HITL",
+                  "value": "HITL"
+                },
+                {
+                  "name": "Salida Slack",
+                  "value": "Salida Slack"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Nodo",
+              "displayName": "Nodo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tipo de Error",
+              "displayName": "Tipo de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Mensaje de Error",
+              "displayName": "Mensaje de Error",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Resuelto",
+              "displayName": "Resuelto",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Duración (segundos)",
+              "displayName": "Duración (segundos)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        -6672,
+        -4992
+      ],
+      "id": "2b3cbb9a-5a1e-492e-bf47-d14cddc564ce",
+      "name": "Registrar HITL Rechazado",
+      "credentials": {
+        "airtableTokenApi": {
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Airtable Trigger": {
+      "main": [
+        [
+          {
+            "node": "¿Estado = Generando?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generar Borrador con IA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Borrador + Estado Generado": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "¿Aprobado por Humano?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Estado = Generando?": {
+      "main": [
+        [
+          {
+            "node": "Buscar Base de Conocimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Base de Conocimiento": {
+      "main": [
+        [
+          {
+            "node": "Preparar Contexto IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Contexto IA": {
+      "main": [
+        [
+          {
+            "node": "Generar Borrador con IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generar Borrador con IA": {
+      "main": [
+        [
+          {
+            "node": "Guardar Borrador + Estado Generado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Error IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Aprobado por Humano?": {
+      "main": [
+        [
+          {
+            "node": "Marcar como Publicable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Registrar Rechazo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como Publicable": {
+      "main": [
+        [
+          {
+            "node": "Notificar Publicación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Publicación": {
+      "main": [
+        [
+          {
+            "node": "Registrar Ejecución Exitosa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Rechazo": {
+      "main": [
+        [
+          {
+            "node": "Registrar HITL Rechazado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "nodeGroups": [],
+  "tags": []
+}
